@@ -8,7 +8,7 @@ def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """
     Args:
         page: int,   page_size: int
-    
+
     return
         A tuple containing a start index and end index corresponding
         to the range of indexes to return a list for those particular

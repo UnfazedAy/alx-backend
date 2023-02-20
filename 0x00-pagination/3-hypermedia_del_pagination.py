@@ -5,7 +5,7 @@ Deletion-resilient hypermedia pagination
 
 import csv
 import math
-from typing import Dict, List
+from typing import List, Dict
 
 
 class Server:
@@ -29,8 +29,7 @@ class Server:
         return self.__dataset
 
     def indexed_dataset(self) -> Dict[int, List]:
-        """
-        Dataset indexed by sorting position, starting at 0
+        """Dataset indexed by sorting position, starting at 0
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
@@ -41,28 +40,42 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """
-        Retrieves info about a page from a given index and with a
-        specified size.
-        """
-        dataset = self.indexed_dataset()
-        data_length = len(dataset)
-        assert index is not None and index >= 0 and index < data_length
-        response = {}
-        data = []
-        response['index'] = index
-        for i in range(page_size):
-            while True:
-                current = dataset.get(index)
-                index += 1
-                if current is not None:
-                    break
-            data.append(current)
+        """A function that ensures that the proper data are returned
+        when queried even if some rows of the dataset are deleted.
 
-        response['data'] = data
-        response['page_size'] = len(data)
-        if dataset.get(index):
-            response['next_index'] = index
+        Args:
+            index (int): _description_. Defaults to None and refers
+                to a page of the dataset with page_size e.g. if index is 1
+                and default page size is 10, then index should be 0 - 9
+            page_size (int):  Defaults to 10.
+
+        Returns:
+            Dict: _description_
+        """
+        result = {}
+        data = []
+        indexed_data = self.indexed_dataset()
+        assert index >= 0 and index <= max(indexed_data.keys())
+
+        if index is not None:
+            current_index = index
         else:
-            response['next_index'] = None
-        return response
+            current_index = 0
+
+        track = 0
+        while track < page_size and current_index <= max(indexed_data.keys()):
+            if indexed_data.get(current_index):
+                data.append(indexed_data.get(current_index))
+            else:
+                # If a data is not in the index,
+                # we still have to maintain the return page_size
+                page_size += 1
+            current_index += 1
+            track += 1
+
+        result['index'] = index
+        result['data'] = data
+        result['page_size'] = len(data)
+        result['next_index'] = current_index
+
+        return result

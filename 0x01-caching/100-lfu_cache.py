@@ -26,7 +26,6 @@ class LFUCache(BaseCaching):
 
             self.lfu_dict[key] = self.lfu_dict.get(key, 0) + 1
             self.cache_data[key] = item
-            
 
     def get(self, key):
         """Retrieves the value of a key"""

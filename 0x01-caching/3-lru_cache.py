@@ -14,9 +14,9 @@ class LRUCache(BaseCaching):
     def put(self, key, item):
         """Puts the infos in a fifo cache system and perform fifo algorith"""
         if key is None or item is None:
-            pass
+            return
 
-        if key in self.cache_data:
+        if key in self.lru_list:
             self.lru_list.remove(key)
 
         elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:

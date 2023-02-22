@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Task 3 module -> MRU caching"""
+"""Task 4 module -> MRU caching"""
 
 from base_caching import BaseCaching
 
@@ -20,7 +20,7 @@ class MRUCache(BaseCaching):
             self.mru_list.remove(key)
 
         elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            # Gets the least recently used item in the list to discard
+            # Gets the most recently used item in the list to discard
             discard = self.mru_list[-1]
             del self.cache_data[discard]
             # deletes the key also in the data

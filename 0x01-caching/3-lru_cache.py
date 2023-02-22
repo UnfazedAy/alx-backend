@@ -29,7 +29,6 @@ class LRUCache(BaseCaching):
 
             self.cache_data[key] = item
             self.lifo_cache.append(key)
-            print(self.lifo_cache)
 
     def get(self, key):
         """Retrieves the value of a key"""

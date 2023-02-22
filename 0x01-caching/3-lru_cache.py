@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Task 2 module -> LIFO caching"""
+"""Task 3 module -> LRU caching"""
 
 from base_caching import BaseCaching
 
 
-class LIFOCache(BaseCaching):
+class LRUCache(BaseCaching):
     """class for lifo caching"""
     def __init__(self):
         super().__init__()
         # A list to store the keys so as to easily discard using FIFO
-        self.keys = []
+        self.lifo_cache = []
 
     def put(self, key, item):
         """Puts the infos in a fifo cache system and perform fifo algorith"""
@@ -17,14 +17,19 @@ class LIFOCache(BaseCaching):
             pass
         else:
             if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                # Gets the last item in the list to discard
-                discard = self.keys[-1]
+                # Gets the least recently used item in the list to discard
+                discard = self.lifo_cache[0]
                 del self.cache_data[discard]
-                # deletes the last key also in the data
-                self.keys.pop()
+                # deletes the key also in the data
+                self.lifo_cache.pop(0)
                 print("DISCARD: {}".format(discard))
+
+            if key in self.lifo_cache:
+                del self.lifo_cache[self.lifo_cache.index(key)]
+
             self.cache_data[key] = item
-            self.keys.append(key)
+            self.lifo_cache.append(key)
+            print(self.lifo_cache)
 
     def get(self, key):
         """Retrieves the value of a key"""

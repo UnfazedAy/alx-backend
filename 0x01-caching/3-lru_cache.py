@@ -19,7 +19,7 @@ class LRUCache(BaseCaching):
         if key in self.cache_data:
             self.lru_list.remove(key)
         
-        elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+        elif len(self.cache_data) == BaseCaching.MAX_ITEMS:
             # Gets the least recently used item in the list to discard
             discard = self.lru_list[0]
             del self.cache_data[discard]

@@ -8,7 +8,7 @@ class LIFOCache(BaseCaching):
     """class for lifo caching"""
     def __init__(self):
         super().__init__()
-        # A list to store the keys so as to easily discard using FIFO
+        # A list to store the keys so as to easily discard using LIFO
         self.keys = []
 
     def put(self, key, item):

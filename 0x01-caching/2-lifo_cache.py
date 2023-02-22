@@ -25,7 +25,6 @@ class LIFOCache(BaseCaching):
                 print("DISCARD: {}".format(discard))
             self.cache_data[key] = item
             self.keys.append(key)
-            print(self.keys)
 
     def get(self, key):
         """Retrieves the value of a key"""

@@ -15,19 +15,16 @@ class FIFOCache(BaseCaching):
         """Puts the infos in a fifo cache system and perform fifo algorith"""
         if key is None or item is None:
             pass
-
-        if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-
-            # Gets the first item in the list to discard
-            discard = self.keys[0]
-            del self.cache_data[discard]
-
-            # deletes the first key also in the data
-            self.keys.pop(0)
-            print("DISCARD: {}".format(discard))
-
-        self.cache_data[key] = item
-        self.keys.append(key)
+        else:
+            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                # Gets the first item in the list to discard
+                discard = self.keys[0]
+                del self.cache_data[discard]
+                # deletes the first key also in the data
+                self.keys.pop(0)
+                print("DISCARD: {}".format(discard))
+            self.cache_data[key] = item
+            self.keys.append(key)
 
     def get(self, key):
         """Retrieves the value of a key"""

@@ -5,7 +5,7 @@ from base_caching import BaseCaching
 
 
 class LFUCache(BaseCaching):
-    """class for LFU caching"""
+    """class for lifo caching"""
     def __init__(self):
         super().__init__()
         # A dict to store and monitor the freq of the inputs
@@ -19,7 +19,6 @@ class LFUCache(BaseCaching):
             if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
                 # get the key with the minimal frequency
                 min_key = min(self.lfu_dict, key=self.lfu_dict.get)
-                print('This is the ', min_key)
                 discard = min_key
                 del self.cache_data[discard]
                 del self.lfu_dict[discard]

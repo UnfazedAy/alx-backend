@@ -19,7 +19,7 @@ class LIFOCache(BaseCaching):
         if key in self.keys:
             self.keys.remove(key)
 
-        if len(self.cache_data) >= BaseCaching.MAX_ITEMS\
+        elif len(self.cache_data) >= BaseCaching.MAX_ITEMS\
                 and key not in self.cache_data:
             # Gets the last item in the list to discard
             discard = self.keys[-1]
@@ -36,6 +36,4 @@ class LIFOCache(BaseCaching):
         if key is None or key not in self.cache_data:
             return None
 
-        self.keys.remove(key)
-        self.keys.append(key)
         return self.cache_data.get(key)

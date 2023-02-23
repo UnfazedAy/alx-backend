@@ -35,4 +35,7 @@ class LIFOCache(BaseCaching):
         """Retrieves the value of a key"""
         if key is None or key not in self.cache_data:
             return None
+
+        self.keys.remove(key)
+        self.keys.append(key)
         return self.cache_data.get(key)

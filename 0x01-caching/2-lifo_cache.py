@@ -14,7 +14,7 @@ class LIFOCache(BaseCaching):
     def put(self, key, item):
         """Puts the infos in a fifo cache system and perform fifo algorith"""
         if key is None or item is None:
-            pass
+            return
 
         if key in self.keys:
             self.keys.remove(key)

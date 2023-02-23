@@ -5,7 +5,7 @@ from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
-    """class for lifo caching"""
+    """class for LRU caching"""
     def __init__(self):
         super().__init__()
         # A list to store the keys so as to easily track and discard using lRU

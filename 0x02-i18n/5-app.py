@@ -28,7 +28,7 @@ babel = Babel(app)
 
 # To make this work comment out line 31 and uncomment line 65
 # since new versions doesn't support it anymore
-# @babel.localeselector
+@babel.localeselector
 def get_locale():
     """Selects the language best match for the locale from the
     configured languages"""
@@ -62,7 +62,7 @@ def index() -> str:
     return render_template("5-index.html")
 
 
-babel.init_app(app, locale_selector=get_locale)
+# babel.init_app(app, locale_selector=get_locale)
 
 
 if __name__ == "__main__":

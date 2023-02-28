@@ -38,8 +38,9 @@ Then edit files translations/[en|fr]/LC_MESSAGES/messages.po to provide the corr
 | msgid | English | French |
 | --- | --- | --- |
 | home_title | "Welcome to Holberton" | "Bienvenue chez Holberton" |
-| home_header | "Hello world!" | "Bonjour monde!"
-Then compile your dictionaries with |
+| home_header | "Hello world!" | "Bonjour monde!" |
+
+Then compile your dictionaries with
 
     $ pybabel compile -d translations
 Reload the home page of your app and make sure that the correct messages show up.

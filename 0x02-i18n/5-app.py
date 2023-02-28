@@ -50,7 +50,7 @@ def get_user():
 
 
 @app.before_request
-def berfore_request():
+def before_request():
     """Executes before any other request is executed
     and also makes user global"""
     g.user = get_user()

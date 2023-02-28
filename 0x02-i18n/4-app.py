@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Task 3 module"""
+"""Task 4 module"""
 
 
 from flask import Flask, render_template, request
@@ -35,7 +35,7 @@ def get_locale():
 @app.route("/", strict_slashes=False)
 def index() -> str:
     """Serving the index page that has babel config"""
-    return render_template("3-index.html")
+    return render_template("4-index.html")
 
 
 # babel.init_app(app, locale_selector=get_locale)

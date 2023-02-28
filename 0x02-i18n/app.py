@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Task 7 module"""
+"""Advanced task module"""
 
 
 from flask import Flask, render_template, request, g
 from flask_babel import Babel
+import datetime
+import pytz
 
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
@@ -25,9 +27,9 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
-# To make this work comment out line 30 and uncomment line 78
+# To make this work comment out line 32, 58 and uncomment line 106 - 109
 # since new versions doesn't support it anymore
-@babel.localeselector
+# @babel.localeselector
 def get_locale():
     """Selects the language best match for the locale from the
     configured languages"""
@@ -52,6 +54,31 @@ def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
+# @babel.timezoneselector
+def get_timezone():
+    """Infers appropriate timezone"""
+
+    # Timezone from URL parameter
+    timezone = request.args.get('timezone')
+    if timezone:
+        try:
+            pytz.timezone(timezone)
+            return timezone
+        except pytz.exceptions.UnknownTimeZoneError as e:
+            return
+
+    # Timezone from users preference
+    if g.user and g.user.get('timezone') in users.values():
+        try:
+            timezone = g.user.get('timezone')
+            return pytz.timezone(timezone)
+        except pytz.exceptions.UnknownTimeZoneError as e:
+            return
+
+    # Default Timezone
+    return app.config["BABEL_DEFAULT_TIMEZONE"]
+
+
 def get_user():
     """
     checks if a user exist and returns the user dict otherwise None
@@ -67,15 +94,20 @@ def before_request():
     """Executes before any other request is executed
     and also makes user global"""
     g.user = get_user()
+    now = datetime.datetime.now()
+    g.time = now.strftime("%b %d, %Y, %I:%M:%S %p")
 
 
 @app.route("/", strict_slashes=False)
 def index() -> str:
     """Serving the index page that has babel config"""
-    return render_template("6-index.html")
+    return render_template("index.html")
 
 
-# babel.init_app(app, locale_selector=get_locale)
+babel.init_app(
+    app, locale_selector=get_locale,
+    timezone_selector=get_timezone
+)
 
 
 if __name__ == "__main__":

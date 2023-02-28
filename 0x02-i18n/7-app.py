@@ -98,7 +98,7 @@ def before_request():
 @app.route("/", strict_slashes=False)
 def index() -> str:
     """Serving the index page that has babel config"""
-    return render_template("5-index.html")
+    return render_template("7-index.html")
 
 
 # babel.init_app(

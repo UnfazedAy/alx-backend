@@ -17,7 +17,8 @@ app = Flask(__name__)
 app.config.from_object(Config)
 babel = Babel(app)
 
-# To make this work comment out line 22
+
+# To make this work comment out line 23 and line 36
 # since new versions doesn't support it anymore
 @babel.localeselector
 def get_locale():
@@ -32,7 +33,7 @@ def index():
     return render_template("3-index.html")
 
 
-babel.init_app(app, locale_selector=get_locale)
+# babel.init_app(app, locale_selector=get_locale)
 
 
 if __name__ == "__main__":

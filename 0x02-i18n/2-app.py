@@ -18,7 +18,7 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
-# To make this work comment out line 23 and line 36
+# To make this work comment out line 23 and uncomment line 36
 # since new versions doesn't support it anymore
 @babel.localeselector
 def get_locale():

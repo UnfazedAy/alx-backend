@@ -2,7 +2,7 @@
 
 # Tasks
 ## 0. Basic Flask app
-First you will setup a basic Flask app in 0-app.py. Create a single / route and an index.html template that simply outputs “Welcome to Holberton” as page title (<title>) and “Hello world” as header (<h1>).
+First you will setup a basic Flask app in 0-app.py. Create a single / route and an index.html template that simply outputs “Welcome to Holberton” as page title (<title>) and “Hello world” as header (<h1>)
 
 ## 1. Basic Babel setup
 Install the Babel Flask extension:
@@ -38,8 +38,8 @@ Then edit files translations/[en|fr]/LC_MESSAGES/messages.po to provide the corr
 | msgid | English | French |
 | --- | --- | --- |
 | home_title | "Welcome to Holberton" | "Bienvenue chez Holberton" |
-| home_header | "Hello world!" | "Bonjour monde!" |
-Then compile your dictionaries with
+| home_header | "Hello world!" | "Bonjour monde!"
+Then compile your dictionaries with |
 
     $ pybabel compile -d translations
 Reload the home page of your app and make sure that the correct messages show up.
@@ -53,7 +53,7 @@ Now you should be able to test different translations by visiting http://127.0.0
 
 Visiting http://127.0.0.1:5000/?locale=fr should display this level 1 heading:
 
-    # **Bonjour monde!**
+# **Bonjour monde!**
 
 # 5. Mock logging in
 Creating a user login system is outside the scope of this project. To emulate a similar behavior, copy the following user table in 5-app.py.

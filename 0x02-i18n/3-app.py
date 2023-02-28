@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Task 2 module"""
+"""Task 3 module"""
 
 
 from flask import Flask, render_template, request

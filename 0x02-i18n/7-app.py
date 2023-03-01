@@ -26,7 +26,7 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
-# To make this work comment out line 30, 56 and uncomment line 104 - 107
+# To make this work comment out line 30, 56 and uncomment line 106 - 109
 # since new versions doesn't support it anymore
 @babel.localeselector
 def get_locale():
@@ -54,7 +54,7 @@ def get_locale():
 
 
 @babel.timezoneselector
-def get_timezone():
+def get_timezone() -> str:
     """Infers appropriate timezone"""
 
     # Timezone from URL parameter
@@ -63,16 +63,18 @@ def get_timezone():
         try:
             pytz.timezone(timezone)
             return timezone
+
         except pytz.exceptions.UnknownTimeZoneError as e:
-            return
+            return app.config["BABEL_DEFAULT_TIMEZONE"]
 
     # Timezone from users preference
     if g.user and g.user.get('timezone') in users.values():
         try:
             timezone = g.user.get('timezone')
             return pytz.timezone(timezone)
+
         except pytz.exceptions.UnknownTimeZoneError as e:
-            return
+            return app.config["BABEL_DEFAULT_TIMEZONE"]
 
     # Default Timezone
     return app.config["BABEL_DEFAULT_TIMEZONE"]

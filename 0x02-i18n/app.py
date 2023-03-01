@@ -4,7 +4,7 @@
 
 from flask import Flask, render_template, request, g
 from flask_babel import Babel
-import datetime
+from datetime import datetime
 import pytz
 
 users = {
@@ -27,7 +27,7 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
-# To make this work comment out line 32, 58 and uncomment line 106 - 109
+# To make this work comment out line 32, 58 and uncomment line 110 - 113
 # since new versions doesn't support it anymore
 # @babel.localeselector
 def get_locale():
@@ -64,16 +64,18 @@ def get_timezone():
         try:
             pytz.timezone(timezone)
             return timezone
-        except pytz.exceptions.UnknownTimeZoneError as e:
-            return
+
+        except pytz.exceptions.UnknownTimeZoneError:
+            return app.config["BABEL_DEFAULT_TIMEZONE"]
 
     # Timezone from users preference
     if g.user and g.user.get('timezone') in users.values():
         try:
             timezone = g.user.get('timezone')
             return pytz.timezone(timezone)
-        except pytz.exceptions.UnknownTimeZoneError as e:
-            return
+
+        except pytz.exceptions.UnknownTimeZoneError:
+            return app.config["BABEL_DEFAULT_TIMEZONE"]
 
     # Default Timezone
     return app.config["BABEL_DEFAULT_TIMEZONE"]
@@ -94,8 +96,10 @@ def before_request():
     """Executes before any other request is executed
     and also makes user global"""
     g.user = get_user()
-    now = datetime.datetime.now()
-    g.time = now.strftime("%b %d, %Y, %I:%M:%S %p")
+    now_utc = datetime.utcnow()
+    timezone = pytz.timezone(g.user.get('timezone'))
+    now_tz = now_utc.astimezone(timezone)
+    g.time = now_tz.strftime("%b %d, %Y, %I:%M:%S %p")
 
 
 @app.route("/", strict_slashes=False)
@@ -104,10 +108,10 @@ def index() -> str:
     return render_template("index.html")
 
 
-babel.init_app(
-    app, locale_selector=get_locale,
-    timezone_selector=get_timezone
-)
+# babel.init_app(
+#     app, locale_selector=get_locale,
+#     timezone_selector=get_timezone
+# )
 
 
 if __name__ == "__main__":

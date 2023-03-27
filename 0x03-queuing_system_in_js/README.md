@@ -38,3 +38,188 @@ Requirements:
 - GitHub repository: alx-backend
 - Directory: 0x03-queuing_system_in_js
 - File: README.md, dump.rdb
+
+## 1. Node Redis Client
+Install node_redis using npm
+
+Using Babel and ES6, write a script named 0-redis_client.js. It should connect to the Redis server running on your machine:
+
+- It should log to the console the message Redis client connected to the server when the connection to Redis works correctly
+- It should log to the console the message Redis client not connected to the server: ERROR_MESSAGE when the connection to Redis does not work
+
+**Requirements**
+- To import the library, you need to use the keyword import
+
+        bob@dylan:~$ ps ax | grep redis-server
+        2070 pts/1    S+     0:00 grep --color=auto redis-server
+        bob@dylan:~$ 
+        bob@dylan:~$ npm run dev 0-redis_client.js 
+
+        > queuing_system_in_js@1.0.0 dev /root
+        > nodemon --exec babel-node --presets @babel/preset-env "0-redis_client.js"
+
+        [nodemon] 2.0.4
+        [nodemon] to restart at any time, enter `rs`
+        [nodemon] watching path(s): *.*
+        [nodemon] watching extensions: js,mjs,json
+        [nodemon] starting `babel-node --presets @babel/preset-env 0-redis_client.js`
+        Redis client not connected to the server: Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+        Redis client not connected to the server: Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+        Redis client not connected to the server: Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+        ^C
+        bob@dylan:~$ 
+        bob@dylan:~$ ./src/redis-server > /dev/null 2>&1 &
+        [1] 2073
+        bob@dylan:~$ ps ax | grep redis-server
+        2073 pts/0    Sl     0:00 ./src/redis-server *:6379
+        2078 pts/1    S+     0:00 grep --color=auto redis-server
+        bob@dylan:~$
+        bob@dylan:~$ npm run dev 0-redis_client.js 
+
+        > queuing_system_in_js@1.0.0 dev /root
+        > nodemon --exec babel-node --presets @babel/preset-env "0-redis_client.js"
+
+        [nodemon] 2.0.4
+        [nodemon] to restart at any time, enter `rs`
+        [nodemon] watching path(s): *.*
+        [nodemon] watching extensions: js,mjs,json
+        [nodemon] starting `babel-node --presets @babel/preset-env 0-redis_client.js`
+        Redis client connected to the server
+        ^C
+        bob@dylan:~$
+
+**Repo:**
+- GitHub repository: alx-backend
+- Directory: 0x03-queuing_system_in_js
+- File: 0-redis_client.js
+
+## 2. Node Redis client and basic operations
+In a file 1-redis_op.js, copy the code you previously wrote (0-redis_client.js).
+
+Add two functions:
+
+- setNewSchool:
+        - It accepts two arguments schoolName, and value.
+        - It should set in Redis the value for the key schoolName
+        - It should display a confirmation message using redis.print
+
+- displaySchoolValue:
+        - It accepts one argument schoolName.
+        - It should log to the console the value for the key passed as argument
+
+At the end of the file, call:
+
+- displaySchoolValue('Holberton');
+- setNewSchool('HolbertonSanFrancisco', '100');
+- displaySchoolValue('HolbertonSanFrancisco');
+
+        bob@dylan:~$ npm run dev 1-redis_op.js 
+
+        > queuing_system_in_js@1.0.0 dev /root
+        > nodemon --exec babel-node --presets @babel/preset-env "1-redis_op.js"
+
+        [nodemon] 2.0.4
+        [nodemon] to restart at any time, enter `rs`
+        [nodemon] watching path(s): *.*
+        [nodemon] watching extensions: js,mjs,json
+        [nodemon] starting `babel-node --presets @babel/preset-env 1-redis_op.js`
+        Redis client connected to the server
+        School
+        Reply: OK
+        100
+        ^C
+
+        bob@dylan:~$
+
+**Repo:**
+- GitHub repository: alx-backend
+- Directory: 0x03-queuing_system_in_js
+- File: 1-redis_op.js
+
+## 3. Node Redis client and async operations
+In a file 2-redis_op_async.js, let’s copy the code from the previous exercise (1-redis_op.js)
+
+Using promisify, modify the function displaySchoolValue to use ES6 async / await
+
+Same result as 1-redis_op.js
+
+        bob@dylan:~$ npm run dev 2-redis_op_async.js
+
+        > queuing_system_in_js@1.0.0 dev /root
+        > nodemon --exec babel-node --presets @babel/preset-env "2-redis_op_async.js"
+
+        [nodemon] 2.0.4
+        [nodemon] to restart at any time, enter `rs`
+        [nodemon] watching path(s): *.*
+        [nodemon] watching extensions: js,mjs,json
+        [nodemon] starting `babel-node --presets @babel/preset-env 2-redis_op_async.js`
+        Redis client connected to the server
+        School
+        Reply: OK
+        100
+        ^C
+
+        bob@dylan:~$
+
+**Repo:**
+- GitHub repository: alx-backend
+- Directory: 0x03-queuing_system_in_js
+- File: 2-redis_op_async.js
+
+## 4. Node Redis client and advanced operations
+
+In a file named 4-redis_advanced_op.js, let’s use the client to store a hash value
+
+**Create Hash:**
+Using hset, let’s store the following:
+
+- The key of the hash should be HolbertonSchools
+- It should have a value for:
+        - Portland=50
+        - Seattle=80
+        - New York=20
+        - Bogota=20
+        - Cali=40
+        - Paris=2
+
+Make sure you use redis.print for each hset
+
+**Display Hash:**
+Using hgetall, display the object stored in Redis. It should return the following:
+
+**Requirements:**
+
+- Use callbacks for any of the operation, we will look at async operations later
+
+        bob@dylan:~$ npm run dev 4-redis_advanced_op.js 
+
+        > queuing_system_in_js@1.0.0 dev /root
+        > nodemon --exec babel-node --presets @babel/preset-env "4-redis_advanced_op.js"
+
+        [nodemon] 2.0.4
+        [nodemon] to restart at any time, enter `rs`
+        [nodemon] watching path(s): *.*
+        [nodemon] watching extensions: js,mjs,json
+        [nodemon] starting `babel-node --presets @babel/preset-env 4-redis_advanced_op.js`
+        Redis client connected to the server
+        Reply: 1
+        Reply: 1
+        Reply: 1
+        Reply: 1
+        Reply: 1
+        Reply: 1
+        {
+        Portland: '50',
+        Seattle: '80',
+        'New York': '20',
+        Bogota: '20',
+        Cali: '40',
+        Paris: '2'
+        }
+        ^C
+        bob@dylan:~$
+
+**Repo:**
+- GitHub repository: alx-backend
+- Directory: 0x03-queuing_system_in_js
+- File: 4-redis_advanced_op.js

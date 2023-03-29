@@ -4,7 +4,8 @@ export default function createPushNotificationsJobs(jobs, queue) {
     }
   
   jobs.forEach((jobData) => {
-    const job = queue.create('push_notification_code_3', jobData).save((error) => {
+    const job = queue.create('push_notification_code_3', jobData)
+    job.save((error) => {
     if (!error) console.log(`Notification job created: ${job.id}`);
     });
 

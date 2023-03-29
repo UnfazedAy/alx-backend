@@ -68,13 +68,16 @@ app.get('/reserve_product/:itemId', async (req, res) => {
   const item = getItemById(parseInt(itemId));
 
   if (item) {
+    // if items available is less than 1 
     if (item.initialAvailableQuantity < 1) {
       res.json({"status":"Not enough stock available","itemId":itemId});
     } else {
+      // reserves 1 item if item available is greater than 1
       reserveStockById(itemId, 1);
       res.json({"status":"Reservation confirmed","itemId": itemId});
     }
   } else {
+    // If item doesn't exist
     res.json({"status":"Product not found"})
   }
 });

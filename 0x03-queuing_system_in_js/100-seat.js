@@ -40,29 +40,36 @@ app.get('/available_seats', async (req, res) => {
 app.get('/reserve_seat', (req, res) => {
   if (reservationEnabled === false) {
     res.json({ "status": "Reservation are blocked" });
-  }
-
-  const job = queue.create('reserve_seat');
-  job.save((err) => {
-    if (!err) res.json({ "status": "Reservation in process" });
-    res.json({ "status": "Reservation failed" });
+  } else {
+    const job = queue.create('reserve_seat');
+    job.save((err) => {
+      if (!err) {
+        res.json({ "status": "Reservation in process" });
+      } else {
+        res.json({ "status": "Reservation failed" });
+      }
   });
 
-  job.on('complete', () => console.log(`Seat reservation job ${job.id} completed`));
-  job.on('failed', (err) => console.log(`Seat reservation job ${job.id} failed: ${err}`));
+    job.on('complete', (result) => console.log(`Seat reservation job ${job.id} completed`));
+    job.on('failed', (err) => console.log(`Seat reservation job ${job.id} failed: ${err}`));
+  }
 });
 
 app.get('/process', (req, res) => {
   res.json({ "status": "Queue processing" });
   queue.process('reserve_seat', async (job, done) => {
     const availableSeats = await getCurrentAvailableSeats();
-    const currentSeat = (parseInt(availableSeats) || 0) - 1;
-    reserveSeat(currentSeat);
+    const currentSeats = (parseInt(availableSeats) || 0) - 1;
+    reserveSeat(currentSeats);
 
-    if (currentSeat === 0) reservationEnabled = false;
-    else if (currentSeat > 0) done();
-    done(new Error('Not enough seats available'));
-
+    if (currentSeats === 0) {
+      reservationEnabled = false;
+    }
+    if (currentSeats > 0) {
+      done();
+    } else {
+      done(new Error('Not enough seats available'));
+    }
   });
 });
 
